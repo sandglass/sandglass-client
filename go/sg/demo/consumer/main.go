@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/celrenheit/sandflake"
+	"github.com/celrenheit/sandglass-client/go/sg"
 	"github.com/celrenheit/sandglass-grpc/go/sgproto"
-	"github.com/celrenheit/sandglass/client"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 		panic(err)
 	}
 
-	c, err := client.New(client.WithAddresses(*addr))
+	c, err := sg.NewClient(sg.WithAddresses(*addr))
 	if err != nil {
 		panic(err)
 	}

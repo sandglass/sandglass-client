@@ -1,4 +1,4 @@
-package client
+package sg
 
 import (
 	"context"
@@ -33,7 +33,7 @@ func WithGRPCClientConn(conn *grpc.ClientConn) optionFn {
 	}
 }
 
-func New(opts ...optionFn) (c *Client, err error) {
+func NewClient(opts ...optionFn) (c *Client, err error) {
 	c = &Client{opts: &options{}}
 
 	for _, o := range opts {
