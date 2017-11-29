@@ -42,13 +42,11 @@ func main() {
 	fmt.Println("producing to partition", partition)
 	var gen sandflake.Generator
 	start := time.Now()
-	msgCh, errCh := c.ProduceMessageCh(context.Background())
+	msgCh, errCh := c.ProduceMessageCh(context.Background(), topic, partition)
 	for i := 0; i < *n; i++ {
 		msg := &sgproto.Message{
-			Topic:     topic,
-			Partition: partition,
-			Offset:    gen.Next(),
-			Value:     data,
+			Offset: gen.Next(),
+			Value:  data,
 		}
 
 		select {

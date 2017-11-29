@@ -35,13 +35,11 @@ func main() {
 	partition := partitions[0]
 	var gen sandflake.Generator
 
-	msgCh, errCh := c.ProduceMessageCh(context.Background())
+	msgCh, errCh := c.ProduceMessageCh(context.Background(), topic, partition)
 	for i := 0; i < 1e3; i++ {
 		msg := &sgproto.Message{
-			Topic:     topic,
-			Partition: partition,
-			Offset:    gen.Next(),
-			Value:     randomBytes(1e4),
+			Offset: gen.Next(),
+			Value:  randomBytes(1e4),
 		}
 
 		select {
