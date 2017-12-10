@@ -58,6 +58,17 @@ func (c *Consumer) Acknowledge(ctx context.Context, msg *sgproto.Message) error 
 	return err
 }
 
+func (c *Consumer) NotAcknowledge(ctx context.Context, msg *sgproto.Message) error {
+	_, err := c.client.client.NotAcknowledge(ctx, &sgproto.OffsetChangeRequest{
+		Topic:         c.topic,
+		Partition:     c.partition,
+		ConsumerGroup: c.group,
+		ConsumerName:  c.name,
+		Offset:        msg.Offset,
+	})
+	return err
+}
+
 func (c *Consumer) AcknowledgeMessages(ctx context.Context, offsets []sandflake.ID) error {
 	if len(offsets) == 0 {
 		return nil
