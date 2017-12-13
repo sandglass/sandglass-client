@@ -1,0 +1,27 @@
+{
+  "name": "@sandglass/client",
+  "version": "0.1.0",
+  "description": "Sandglass Client",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/celrenheit/sandglass-client.git"
+  },
+  "keywords": [
+    "sandglass",
+    "client"
+  ],
+  "author": "celrenheit",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/celrenheit/sandglass-client/issues"
+  },
+  "homepage": "https://github.com/celrenheit/sandglass-client#readme",
+  "dependencies": {
+    "@sandglass/grpc": "^0.1.1",
+    "grpc": "^1.7.3"
+  }
+}
