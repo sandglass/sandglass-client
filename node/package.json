@@ -16,6 +16,10 @@
   ],
   "author": "celrenheit",
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=7.x.x",
+    "npm": ">=4.x.x"
+  },
   "bugs": {
     "url": "https://github.com/celrenheit/sandglass-client/issues"
   },
