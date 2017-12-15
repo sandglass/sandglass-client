@@ -2,9 +2,9 @@
 
 const sgproto = require('@sandglass/grpc')
 const grpc = require('grpc')
-const Consumer = require('./consumer')
 
-const client = new sgproto.BrokerService(':7170', grpc.credentials.createInsecure())
+const Consumer = require('./consumer')
+const { internal } = require('./util')
 
 /**
  * @typedef {Object} Client
@@ -14,13 +14,20 @@ const client = new sgproto.BrokerService(':7170', grpc.credentials.createInsecur
 module.exports = class Client {
 
   /**
+   * Sandglass client
+   */
+  constructor() {
+    internal(this).client = new sgproto.BrokerService(':7170', grpc.credentials.createInsecure())
+  }
+
+  /**
    *
    * @param {Object} params
    */
   async createTopic(params) {
     return new Promise((resolve, reject) => {
 
-      client.CreateTopic(params, (err, resp) => {
+      internal(this).client.CreateTopic(params, (err, resp) => {
         if (err) return reject(err)
         return resolve(resp)
       })
@@ -34,7 +41,7 @@ module.exports = class Client {
   async listPartitions(topic) {
     return new Promise((resolve, reject) => {
 
-      client.GetTopic({ name: topic }, (err, resp) => {
+      internal(this).client.GetTopic({ name: topic }, (err, resp) => {
         if (err) return reject(err)
         return resolve(resp)
       })
@@ -50,7 +57,7 @@ module.exports = class Client {
   async produceMessage(topic, partition, msg) {
     return new Promise((resolve, reject) => {
 
-      client.Produce({
+      internal(this).client.Produce({
         topic: topic,
         partition: partition,
         messages: msg,
@@ -74,7 +81,7 @@ module.exports = class Client {
       meta.add('topic', topic)
       meta.add('partition', partition)
 
-      client.ProduceMessagesStream(meta, (err, resp) => {
+      internal(this).client.ProduceMessagesStream(meta, (err, resp) => {
         if (err) return reject(err)
         return resolve(resp)
       })
@@ -89,10 +96,10 @@ module.exports = class Client {
    * @param {String} name
    */
   newConsumer(topic, partition, group, name) {
-    return new Consumer(topic, partition, group, name)
+    return new Consumer(internal(this).client, topic, partition, group, name)
   }
 
-  async close() {
+  close() {
     return grpc.closeClient(this)
   }
 

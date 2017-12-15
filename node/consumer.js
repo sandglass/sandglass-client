@@ -1,9 +1,5 @@
 'use strict'
 
-const sgproto = require('@sandglass/grpc')
-const grpc = require('grpc')
-const client = new sgproto.BrokerService(':7170', grpc.credentials.createInsecure())
-
 const { internal } = require('./util')
 
 /**
@@ -14,13 +10,16 @@ const { internal } = require('./util')
 module.exports = class Consumer {
 
   /**
+   * Sandglass consumer
    *
+   * @param {Object} client
    * @param {String} topic
    * @param {String} partition
    * @param {String} group
    * @param {String} name
    */
-  constructor(topic, partition, group, name) {
+  constructor(client, topic, partition, group, name) {
+    internal(this).client = client
     internal(this).topic = topic
     internal(this).partition = partition
     internal(this).group = group
@@ -30,7 +29,7 @@ module.exports = class Consumer {
   async consume() {
     return new Promise((resolve, reject) => {
 
-      client.ConsumeFromGroup({
+      internal(this).client.ConsumeFromGroup({
         topic: internal(this).topic,
         partition: internal(this).partition,
         consumerGroupName: internal(this).group,
@@ -54,7 +53,7 @@ module.exports = class Consumer {
       if (msg.offset.length === 0) return new Error(`offset should not be emty`)
       if (Array.isArray(msg.offset) === false) return new Error(`offset must be an array`)
 
-      client.Acknowledge({
+      internal(this).client.Acknowledge({
         topic: internal(this).topic,
         partition: internal(this).partition,
         consumerGroupName: internal(this).group,
@@ -79,7 +78,7 @@ module.exports = class Consumer {
       if (msg.offset.length === 0) return new Error(`offset should not be emty`)
       if (Array.isArray(msg.offset) === false) return new Error(`offset must be an array`)
 
-      client.NotAcknowledge({
+      internal(this).client.NotAcknowledge({
         topic: internal(this).topic,
         partition: internal(this).partition,
         consumerGroupName: internal(this).group,
@@ -104,7 +103,7 @@ module.exports = class Consumer {
       if (offsets.length === 0) return new Error(`offsets should not be emty`)
       if (Array.isArray(offsets) === false) return new Error(`offsets must be an array`)
 
-      client.AcknowledgeMessages({
+      internal(this).client.AcknowledgeMessages({
         topic: internal(this).topic,
         partition: internal(this).partition,
         consumerGroupName: internal(this).group,
@@ -129,7 +128,7 @@ module.exports = class Consumer {
       if (msg.offset.length === 0) return new Error(`offset should not be emty`)
       if (Array.isArray(msg.offset) === false) return new Error(`offset must be an array`)
 
-      client.Commit({
+      internal(this).client.Commit({
         topic: internal(this).topic,
         partition: internal(this).partition,
         consumerGroupName: internal(this).group,
