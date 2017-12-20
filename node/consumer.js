@@ -26,19 +26,15 @@ module.exports = class Consumer {
     internal(this).name = name
   }
 
+  /**
+   * @returns {Promise<Stream>}
+   */
   async consume() {
-    return new Promise((resolve, reject) => {
-
-      internal(this).client.ConsumeFromGroup({
-        topic: internal(this).topic,
-        partition: internal(this).partition,
-        consumerGroupName: internal(this).group,
-        consumerName: internal(this).name,
-      },
-      (err, resp) => {
-        if (err) return reject(err)
-        return resolve(resp)
-      })
+    return internal(this).client.ConsumeFromGroup({
+      topic: internal(this).topic,
+      partition: internal(this).partition,
+      consumerGroupName: internal(this).group,
+      consumerName: internal(this).name,
     })
   }
 
