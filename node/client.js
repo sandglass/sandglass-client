@@ -15,14 +15,17 @@ module.exports = class Client {
 
   /**
    * Sandglass client
+   * @param {String} address
    */
-  constructor() {
-    internal(this).client = new sgproto.BrokerService(':7170', grpc.credentials.createInsecure())
+  constructor(address) {
+    internal(this).client = new sgproto.BrokerService(`:${address}`, grpc.credentials.createInsecure())
   }
 
   /**
+   * Create a Topic
    *
    * @param {Object} params
+   * @returns {Object} TopicReply
    */
   async createTopic(params) {
     return new Promise((resolve, reject) => {
@@ -35,6 +38,7 @@ module.exports = class Client {
   }
 
   /**
+   * Get a Topic
    *
    * @param {String} topic
    */
@@ -49,6 +53,7 @@ module.exports = class Client {
   }
 
   /**
+   * Produce a message
    *
    * @param {String} topic
    * @param {String} partition
@@ -70,6 +75,7 @@ module.exports = class Client {
   }
 
   /**
+   * Returns a stream of messages
    *
    * @param {String} topic
    * @param {String} partition
@@ -89,17 +95,21 @@ module.exports = class Client {
   }
 
   /**
+   * Returns a consumer instance
    *
    * @param {String} topic
    * @param {String} partition
    * @param {String} group
    * @param {String} name
    */
-  newConsumer(topic, partition, group, name) {
+  async newConsumer(topic, partition, group, name) {
     return new Consumer(internal(this).client, topic, partition, group, name)
   }
 
-  close() {
+  /**
+   * Close client
+   */
+  async close() {
     return grpc.closeClient(this)
   }
 
