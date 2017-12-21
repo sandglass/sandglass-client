@@ -15,13 +15,27 @@
     "client"
   ],
   "author": "celrenheit",
+  "contributors": [
+    {
+      "name": "celrenheit",
+      "github": "https://github.com/celrenheit"
+    },
+    {
+      "name": "stern0",
+      "github": "https://github.com/stern0"
+    }
+  ],
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=7.x.x",
+    "npm": ">=4.x.x"
+  },
   "bugs": {
     "url": "https://github.com/celrenheit/sandglass-client/issues"
   },
   "homepage": "https://github.com/celrenheit/sandglass-client#readme",
   "dependencies": {
     "@sandglass/grpc": "^0.1.1",
-    "grpc": "^1.7.3"
+    "grpc": "^1.8.0"
   }
 }
