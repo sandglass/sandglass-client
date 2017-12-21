@@ -27,7 +27,7 @@ module.exports = class Consumer {
   }
 
   /**
-   * @returns {Promise<Stream>}
+   * @returns {Promise<ReadableStream>}
    */
   async consume() {
     return internal(this).client.ConsumeFromGroup({

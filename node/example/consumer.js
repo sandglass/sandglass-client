@@ -1,16 +1,21 @@
+const { execSync } = require('child_process')
+
 const Client = require('../client')
 
 const client = new Client('7170')
 
 const topic = 'futura'
 
-// client.createTopic({
-//   name: topic,
-//   replicationFactor: 1,
-//   numPartitions: 6,
-// })
-//   .then(res => console.log(res))
-//   .catch(err => console.log(`there was an error ${err}`))
+client.createTopic({
+  name: topic,
+  replicationFactor: 1,
+  numPartitions: 6,
+})
+  .then(res => console.log(res))
+  .catch(err => console.log(`there was an error ${err}`))
+
+// execute shell command for producing messages
+execSync(`sandctl produce futura '{"dest" : "hi@example.com"}' -n 10`)
 
 async function consume(topic) {
 
