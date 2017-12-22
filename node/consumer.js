@@ -45,9 +45,9 @@ module.exports = class Consumer {
   async acknowledge(msg) {
     return new Promise((resolve, reject) => {
 
-      if (typeof msg.offset === 'undefined') return new Error(`offset must be defined`)
-      if (msg.offset.length === 0) return new Error(`offset should not be emty`)
-      if (Array.isArray(msg.offset) === false) return new Error(`offset must be an array`)
+      if (typeof msg.offset === 'undefined') throw new Error(`offset must be defined`)
+      if (msg.offset.length === 0) throw new Error(`offset should not be emty`)
+      if (Array.isArray(msg.offset) === false) throw new Error(`offset must be an array`)
 
       internal(this).client.Acknowledge({
         topic: internal(this).topic,
@@ -70,9 +70,9 @@ module.exports = class Consumer {
   async notAcknowledge(msg) {
     return new Promise((resolve, reject) => {
 
-      if (typeof msg.offset === 'undefined') return new Error(`offset must be defined`)
-      if (msg.offset.length === 0) return new Error(`offset should not be emty`)
-      if (Array.isArray(msg.offset) === false) return new Error(`offset must be an array`)
+      if (typeof msg.offset === 'undefined') throw new Error(`offset must be defined`)
+      if (msg.offset.length === 0) throw new Error(`offset should not be emty`)
+      if (Array.isArray(msg.offset) === false) throw new Error(`offset must be an array`)
 
       internal(this).client.NotAcknowledge({
         topic: internal(this).topic,
@@ -95,9 +95,9 @@ module.exports = class Consumer {
   async acknowledgeMessages(offsets) {
     return new Promise((resolve, reject) => {
 
-      if (typeof offsets === 'undefined') return new Error(`offsets must be defined`)
-      if (offsets.length === 0) return new Error(`offsets should not be emty`)
-      if (Array.isArray(offsets) === false) return new Error(`offsets must be an array`)
+      if (typeof offsets === 'undefined') throw new Error(`offsets must be defined`)
+      if (offsets.length === 0) throw new Error(`offsets should not be emty`)
+      if (Array.isArray(offsets) === false) throw new Error(`offsets must be an array`)
 
       internal(this).client.AcknowledgeMessages({
         topic: internal(this).topic,
@@ -120,9 +120,9 @@ module.exports = class Consumer {
   async commit(msg) {
     return new Promise((resolve, reject) => {
 
-      if (typeof msg.offset === 'undefined') return new Error(`offset must be defined`)
-      if (msg.offset.length === 0) return new Error(`offset should not be emty`)
-      if (Array.isArray(msg.offset) === false) return new Error(`offset must be an array`)
+      if (typeof msg.offset === 'undefined') throw new Error(`offset must be defined`)
+      if (msg.offset.length === 0) throw new Error(`offset should not be emty`)
+      if (Array.isArray(msg.offset) === false) throw new Error(`offset must be an array`)
 
       internal(this).client.Commit({
         topic: internal(this).topic,
