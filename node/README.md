@@ -2,6 +2,8 @@
 
 
 This is the Sanglass Nodejs client provides a convenient access to the Sandglass message queue via rpc calls.
+It is written with async and the promise pattern so method calls must done with async in mind, which means you can use the `then` and `catch` or `async` and `await` which ones you prefer. Below is a basic usage of the client.
+
 
 #### Creating a topic
 ```js
