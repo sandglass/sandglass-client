@@ -89,7 +89,6 @@ type AsyncProducer struct {
 
 	msgCh  chan []*ProducerMessage
 	wg     sync.WaitGroup
-	doneCh chan struct{}
 	stopCh chan struct{}
 
 	conf *ProducerConfig
@@ -112,6 +111,7 @@ func NewAsyncProducer(client *Client, topic string, opts ...ProducerOption) *Asy
 		conf:   genOptions(opts),
 	}
 
+	p.wg.Add(1)
 	go p.loop()
 
 	return p
@@ -127,8 +127,7 @@ func (p *AsyncProducer) ProduceMessages(ctx context.Context, msgs []*ProducerMes
 }
 
 func (p *AsyncProducer) loop() {
-	defer close(p.doneCh)
-
+	defer p.wg.Done()
 	produce := func(msgs []*ProducerMessage) error {
 		req := generateRequestFromPrducerMessages(p.topic, p.conf.partition, msgs)
 		ctx := context.Background()
@@ -183,7 +182,6 @@ loop:
 
 func (p *AsyncProducer) Close() error {
 	close(p.stopCh)
-	<-p.doneCh
 	p.wg.Wait()
 	return nil
 }
