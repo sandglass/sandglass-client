@@ -154,6 +154,7 @@ loop:
 					// TODO: handle this error
 					log.Printf("unable to produce %d messages, got error: %v\n", len(buf), err)
 				}
+				buf = buf[:0]
 			}
 		case <-p.stopCh:
 			break loop
@@ -164,6 +165,7 @@ loop:
 					// TODO: handle this error
 					log.Printf("unable to produce %d messages, got error: %v\n", len(buf), err)
 				}
+				buf = buf[:0]
 			}
 		}
 	}
@@ -175,6 +177,7 @@ loop:
 			// TODO: handle this error
 			log.Printf("unable to produce %d messages, got error: %v\n", len(buf), err)
 		}
+		buf = buf[:0]
 	}
 }
 
