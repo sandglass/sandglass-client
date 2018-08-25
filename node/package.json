@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/celrenheit/sandglass-client.git"
+    "url": "git+https://github.com/sandglass/sandglass-client.git"
   },
   "keywords": [
     "sandglass",
@@ -31,9 +31,9 @@
     "npm": ">=4.x.x"
   },
   "bugs": {
-    "url": "https://github.com/celrenheit/sandglass-client/issues"
+    "url": "https://github.com/sandglass/sandglass-client/issues"
   },
-  "homepage": "https://github.com/celrenheit/sandglass-client#readme",
+  "homepage": "https://github.com/sandglass/sandglass-client#readme",
   "dependencies": {
     "@sandglass/grpc": "^0.1.1",
     "grpc": "^1.8.0"

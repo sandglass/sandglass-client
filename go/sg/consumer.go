@@ -5,9 +5,7 @@ import (
 	"io"
 	"log"
 
-	"github.com/celrenheit/sandflake"
-
-	"github.com/celrenheit/sandglass-grpc/go/sgproto"
+	"github.com/sandglass/sandglass-grpc/go/sgproto"
 )
 
 type Consumer struct {
@@ -48,7 +46,7 @@ func (c *Consumer) Consume(ctx context.Context) (chan *sgproto.Message, error) {
 }
 
 func (c *Consumer) Acknowledge(ctx context.Context, msgs ...*sgproto.Message) error {
-	offsets := make([]sandflake.ID, len(msgs))
+	offsets := make([]sgproto.Offset, len(msgs))
 	for i, msg := range msgs {
 		offsets[i] = msg.Offset
 	}
@@ -63,7 +61,7 @@ func (c *Consumer) Acknowledge(ctx context.Context, msgs ...*sgproto.Message) er
 }
 
 func (c *Consumer) NotAcknowledge(ctx context.Context, msgs ...*sgproto.Message) error {
-	offsets := make([]sandflake.ID, len(msgs))
+	offsets := make([]sgproto.Offset, len(msgs))
 	for i, msg := range msgs {
 		offsets[i] = msg.Offset
 	}

@@ -7,9 +7,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/celrenheit/sandflake"
-	"github.com/celrenheit/sandglass-client/go/sg"
-	"github.com/celrenheit/sandglass-grpc/go/sgproto"
+	"github.com/sandglass/sandglass-client/go/sg"
+	"github.com/sandglass/sandglass-grpc/go/sgproto"
 )
 
 func main() {
@@ -31,24 +30,19 @@ func main() {
 		panic(err)
 	}
 
-	start := time.Now()
 	partition := partitions[0]
-	var gen sandflake.Generator
 
-	msgCh, errCh := c.ProduceMessageCh(context.Background(), topic, partition)
+	producer := sg.NewAsyncProducer(c, topic, partition)
+	msgs := make([]*sg.ProducerMessage, 0, 1e3)
 	for i := 0; i < 1e3; i++ {
-		msg := &sgproto.Message{
-			Offset: gen.Next(),
-			Value:  randomBytes(1e4),
+		msg := &sg.ProducerMessage{
+			Value: randomBytes(1e4),
 		}
-
-		select {
-		case msgCh <- msg:
-		case err := <-errCh:
-			panic(err)
-		}
+		msgs = append(msgs, msg)
 	}
-	close(msgCh)
+	start := time.Now()
+	producer.ProduceMessages(context.TODO(), msgs)
+
 	fmt.Println("took", time.Since(start))
 	start = time.Now()
 
@@ -63,31 +57,23 @@ func main() {
 
 	n := 0
 	var msg *sgproto.Message
-	offsets := []sandflake.ID{}
+	msgsToAck := []*sgproto.Message{}
 	for msg = range consumeCh {
-		offsets = append(offsets, msg.Offset)
+		msgsToAck = append(msgsToAck, msg)
 		n++
-		if len(offsets) == 1000 {
-			err = consumer.AcknowledgeMessages(context.Background(), offsets)
+		if len(msgsToAck) == 1000 {
+			err = consumer.Acknowledge(context.Background(), msgsToAck...)
 			if err != nil {
 				panic(err)
 			}
 
-			offsets = offsets[:0]
+			msgsToAck = msgsToAck[:0]
 		}
 	}
 
-	err = consumer.AcknowledgeMessages(context.Background(), offsets)
+	err = consumer.Acknowledge(context.Background(), msg)
 	if err != nil {
 		panic(err)
-	}
-
-	if msg != nil {
-		fmt.Println("committing", msg.Offset)
-		err := consumer.Commit(ctx, msg)
-		if err != nil {
-			panic(err)
-		}
 	}
 
 	fmt.Println("took", time.Since(start), "for", n)

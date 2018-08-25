@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/celrenheit/sandglass-grpc/go/sgproto"
+	"github.com/sandglass/sandglass-grpc/go/sgproto"
 )
 
 type ProducerMessage struct {
@@ -104,7 +104,7 @@ func genOptions(opts []ProducerOption) *ProducerConfig {
 	return conf
 }
 
-func NewAsyncProducer(client *Client, topic string, opts ...ProducerOption) *AsyncProducer {
+func NewAsyncProducer(client *Client, topic, partition string, opts ...ProducerOption) *AsyncProducer {
 	p := &AsyncProducer{
 		client: client,
 		topic:  topic,
@@ -195,7 +195,8 @@ func generateRequestFromPrducerMessages(topic, partition string, msgs []*Produce
 
 	for i, msg := range msgs {
 		req.Messages[i] = &sgproto.Message{
-			Value: msg.Value,
+			ConsumeIn: msg.ConsumeIn,
+			Value:     msg.Value,
 		}
 	}
 	return req

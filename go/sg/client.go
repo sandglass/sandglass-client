@@ -3,7 +3,7 @@ package sg
 import (
 	"context"
 
-	"github.com/celrenheit/sandglass-grpc/go/sgproto"
+	"github.com/sandglass/sandglass-grpc/go/sgproto"
 	"google.golang.org/grpc"
 )
 

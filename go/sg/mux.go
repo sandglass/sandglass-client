@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/celrenheit/sandglass-grpc/go/sgproto"
+	"github.com/sandglass/sandglass-grpc/go/sgproto"
 	"golang.org/x/sync/errgroup"
 )
 

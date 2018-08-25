@@ -6,8 +6,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/celrenheit/sandglass-client/go/sg"
-	"github.com/celrenheit/sandglass-grpc/go/sgproto"
+	"github.com/sandglass/sandglass-client/go/sg"
+	"github.com/sandglass/sandglass-grpc/go/sgproto"
 )
 
 func main() {
