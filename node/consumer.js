@@ -116,30 +116,4 @@ module.exports = class Consumer {
     })
   }
 
-  /**
-   *
-   * @param {Object} msg
-   */
-  async commit(msg) {
-
-    if (typeof msg.offset === 'undefined') throw new Error(`offset must be defined`)
-    if (msg.offset.length === 0) throw new Error(`offset should not be emty`)
-    if (Array.isArray(msg.offset) === false) throw new Error(`offset must be an array`)
-
-    return new Promise((resolve, reject) => {
-
-      internal(this).client.Commit({
-        topic: internal(this).topic,
-        partition: internal(this).partition,
-        consumerGroupName: internal(this).group,
-        consumerName: internal(this).name,
-        offset: msg.offset,
-      },
-      (err, resp) => {
-        if (err) return reject(err)
-        return resolve(resp)
-      })
-    })
-  }
-
 }
