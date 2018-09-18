@@ -30,7 +30,7 @@ module.exports = class Consumer {
    * @returns {Promise<ReadableStream>}
    */
   async consume() {
-    return internal(this).client.ConsumeFromGroup({
+    return internal(this).client.client.ConsumeFromGroup({
       topic: internal(this).topic,
       partition: internal(this).partition,
       consumerGroupName: internal(this).group,
@@ -50,7 +50,7 @@ module.exports = class Consumer {
 
     return new Promise((resolve, reject) => {
 
-      internal(this).client.Acknowledge({
+      internal(this).client.client.Acknowledge({
         topic: internal(this).topic,
         partition: internal(this).partition,
         consumerGroupName: internal(this).group,
@@ -76,38 +76,12 @@ module.exports = class Consumer {
 
     return new Promise((resolve, reject) => {
 
-      internal(this).client.NotAcknowledge({
+      internal(this).client.client.NotAcknowledge({
         topic: internal(this).topic,
         partition: internal(this).partition,
         consumerGroupName: internal(this).group,
         consumerName: internal(this).name,
         offset: msg.offset,
-      },
-      (err, resp) => {
-        if (err) return reject(err)
-        return resolve(resp)
-      })
-    })
-  }
-
-  /**
-   *
-   * @param {Array} offsets
-   */
-  async acknowledgeMessages(offsets) {
-
-    if (typeof offsets === 'undefined') throw new Error(`offsets must be defined`)
-    if (offsets.length === 0) throw new Error(`offsets should not be emty`)
-    if (Array.isArray(offsets) === false) throw new Error(`offsets must be an array`)
-
-    return new Promise((resolve, reject) => {
-
-      internal(this).client.AcknowledgeMessages({
-        topic: internal(this).topic,
-        partition: internal(this).partition,
-        consumerGroupName: internal(this).group,
-        consumerName: internal(this).name,
-        offset: offsets,
       },
       (err, resp) => {
         if (err) return reject(err)

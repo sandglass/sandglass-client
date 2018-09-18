@@ -4,7 +4,6 @@ const sgproto = require('@sandglass/grpc')
 const grpc = require('grpc')
 
 const Consumer = require('./consumer')
-const { internal } = require('./util')
 
 /**
  * @typedef {Object} Client
@@ -18,7 +17,7 @@ module.exports = class Client {
    * @param {String} address
    */
   constructor(address) {
-    internal(this).client = new sgproto.BrokerService(`:${address}`, grpc.credentials.createInsecure())
+    this.client = new sgproto.BrokerService(`:${address}`, grpc.credentials.createInsecure())
   }
 
   /**
@@ -30,7 +29,7 @@ module.exports = class Client {
   async createTopic(params) {
     return new Promise((resolve, reject) => {
 
-      internal(this).client.CreateTopic(params, (err, resp) => {
+      this.client.CreateTopic(params, (err, resp) => {
         if (err) return reject(err)
         return resolve(resp)
       })
@@ -45,7 +44,7 @@ module.exports = class Client {
   async listPartitions(topic) {
     return new Promise((resolve, reject) => {
 
-      internal(this).client.GetTopic({ name: topic }, (err, resp) => {
+      this.client.GetTopic({ name: topic }, (err, resp) => {
         if (err) return reject(err)
         return resolve(resp)
       })
@@ -62,7 +61,7 @@ module.exports = class Client {
   async produceMessage(topic, partition, msg) {
     return new Promise((resolve, reject) => {
 
-      internal(this).client.Produce({
+      this.client.Produce({
         topic: topic,
         partition: partition,
         messages: msg,
@@ -87,7 +86,7 @@ module.exports = class Client {
       meta.add('topic', topic)
       meta.add('partition', partition)
 
-      internal(this).client.ProduceMessagesStream(meta, (err, resp) => {
+      this.client.ProduceMessagesStream(meta, (err, resp) => {
         if (err) return reject(err)
         return resolve(resp)
       })
@@ -103,7 +102,7 @@ module.exports = class Client {
    * @param {String} name
    */
   async newConsumer(topic, partition, group, name) {
-    return new Consumer(internal(this).client, topic, partition, group, name)
+    return new Consumer(this.client, topic, partition, group, name)
   }
 
   /**
