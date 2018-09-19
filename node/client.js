@@ -109,7 +109,7 @@ module.exports = class Client {
    * Close client
    */
   async close() {
-    return grpc.closeClient(this)
+    await grpc.closeClient(this)
   }
 
 }

@@ -12,7 +12,7 @@ module.exports = class Consumer {
   /**
    * Sandglass consumer
    *
-   * @param {Object} client
+   * @param {Object} client sandglass Client instance
    * @param {String} topic
    * @param {String} partition
    * @param {String} group
