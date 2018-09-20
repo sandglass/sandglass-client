@@ -45,3 +45,5 @@ consume(topic)
     })
   })
   .catch(err => console.log(`there was an error ${err}`))
+
+client.close()
