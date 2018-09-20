@@ -30,7 +30,7 @@ module.exports = class Consumer {
    * @returns {Promise<ReadableStream>}
    */
   async consume() {
-    return internal(this).client.client.ConsumeFromGroup({
+    return internal(this).client.ConsumeFromGroup({
       topic: internal(this).topic,
       partition: internal(this).partition,
       consumerGroupName: internal(this).group,
@@ -50,7 +50,7 @@ module.exports = class Consumer {
 
     return new Promise((resolve, reject) => {
 
-      internal(this).client.client.Acknowledge({
+      internal(this).client.Acknowledge({
         topic: internal(this).topic,
         partition: internal(this).partition,
         consumerGroupName: internal(this).group,
@@ -76,7 +76,7 @@ module.exports = class Consumer {
 
     return new Promise((resolve, reject) => {
 
-      internal(this).client.client.NotAcknowledge({
+      internal(this).client.NotAcknowledge({
         topic: internal(this).topic,
         partition: internal(this).partition,
         consumerGroupName: internal(this).group,

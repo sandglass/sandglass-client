@@ -20,16 +20,9 @@ execSync(`sandctl produce futura '{"dest" : "hi@example.com"}' -n 10`)
 async function consume(topic) {
 
   try {
-
     const partitions = await client.listPartitions(topic)
-
-    const consumer = await client.newConsumer(
-      topic,
-      partitions[Object.keys(partitions)[0]],
-      'group2',
-      'consumer2'
-    )
-
+    const partition = partitions.partitions[0]
+    const consumer = await client.newConsumer(topic, partition, 'group1', 'consumer1')
     const stream = await consumer.consume()
 
     return stream
@@ -52,7 +45,3 @@ consume(topic)
     })
   })
   .catch(err => console.log(`there was an error ${err}`))
-
-// const start = process.hrtime()
-
-// const end = process.hrtime(start)
